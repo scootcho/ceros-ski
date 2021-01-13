@@ -164,11 +164,13 @@ export class Skier extends Entity {
       this.y - asset.height / 4
     );
 
+    let currentObstacleName;
     const collision = obstacleManager.getObstacles().find((obstacle) => {
       if (this.isJumping && Constants.LOW_OBSTACLES.includes(obstacle.assetName)) {
         return false;
       }
       const obstacleAsset = assetManager.getAsset(obstacle.getAssetName());
+      currentObstacleName = obstacle.assetName;
       const obstaclePosition = obstacle.getPosition();
       const obstacleBounds = new Rect(
         obstaclePosition.x - obstacleAsset.width / 2,
@@ -181,7 +183,11 @@ export class Skier extends Entity {
     });
 
     if (collision) {
-      this.setDirection(Constants.SKIER_DIRECTIONS.CRASH);
+      if (currentObstacleName === "jumpRamp") {
+        this.jump();
+      } else {
+        this.setDirection(Constants.SKIER_DIRECTIONS.CRASH);
+      }
     }
   }
 }

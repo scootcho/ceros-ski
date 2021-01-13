@@ -7,6 +7,8 @@ import { Rect } from './Utils';
 
 export class Game {
     gameWindow = null;
+    secondsPassed;
+    oldTimeStamp;
 
     constructor() {
         this.assetManager = new AssetManager();
@@ -25,13 +27,25 @@ export class Game {
         await this.assetManager.loadAssets(Constants.ASSETS);
     }
 
-    run() {
+    run(timeStamp) {
         this.canvas.clearCanvas();
+        this.showFps(timeStamp)
 
         this.updateGameWindow();
         this.drawGameWindow();
 
         requestAnimationFrame(this.run.bind(this));
+    }
+
+    showFps(timeStamp) {
+        // Calculate the number of seconds passed since the last frame
+        this.secondsPassed = (timeStamp - this.oldTimeStamp) / 1000;
+        this.oldTimeStamp = timeStamp;
+
+        // Calculate fps
+        let fps = Math.round(1 / this.secondsPassed);
+        this.canvas.ctx.font = "30px Verdana";
+        this.canvas.ctx.fillText(`FPS: ${fps}`, 10, 50);
     }
 
     updateGameWindow() {

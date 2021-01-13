@@ -49,6 +49,7 @@ export class Game {
     }
 
     updateGameWindow() {
+        this.skier.checkJumping()
         this.skier.move();
 
         const previousGameWindow = this.gameWindow;
@@ -90,6 +91,10 @@ export class Game {
                 break;
             case Constants.KEYS.DOWN:
                 this.skier.turnDown();
+                event.preventDefault();
+                break;
+            case Constants.KEYS.SPACE:
+                this.skier.jump();
                 event.preventDefault();
                 break;
         }

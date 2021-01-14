@@ -17,9 +17,11 @@ export const SKIER_JUMP3 = 'skierJump3';
 export const SKIER_JUMP4 = 'skierJump4';
 export const SKIER_JUMP5 = 'skierjump5';
 export const JUMP_RAMP = 'jumpRamp';
+export const SKIER_JUMP_ANIMATION = 'skierJumpAnimation';
 
 export const SKIER_STARTING_SPEED = 10;
 export const SKIER_DIAGONAL_SPEED_REDUCER = 1.4142;
+export const SKIER_JUMP_DURATION = 1000;
 
 export const ASSETS = {
     [SKIER_CRASH]: 'img/skier_crash.png',
@@ -58,22 +60,18 @@ export const SKIER_DIRECTION_ASSET = {
     [SKIER_DIRECTIONS.RIGHT]: SKIER_RIGHT,
 };
 
-export const LOW_OBSTACLES = [ROCK1, ROCK2]
+export const LOW_OBSTACLES = [ROCK1, ROCK2];
 
-export const SKIER_JUMP = {
-    JUMP1: 0,
-    JUMP2: 1,
-    JUMP3: 2,
-    JUMP4: 3,
-    JUMP5: 4,
-};
+export const SKIER_JUMP_SEQUENCE = [
+    SKIER_JUMP1,
+    SKIER_JUMP2,
+    SKIER_JUMP3,
+    SKIER_JUMP4,
+    SKIER_JUMP5,
+];
 
-export const SKIER_JUMP_ASSET = {
-    [SKIER_JUMP.JUMP1]: SKIER_JUMP1,
-    [SKIER_JUMP.JUMP2]: SKIER_JUMP2,
-    [SKIER_JUMP.JUMP3]: SKIER_JUMP3,
-    [SKIER_JUMP.JUMP4]: SKIER_JUMP4,
-    [SKIER_JUMP.JUMP5]: SKIER_JUMP5,
+export const ANIMATION_TYPES = {
+    [SKIER_JUMP_ANIMATION]: SKIER_JUMP_SEQUENCE,
 };
 
 export const KEYS = {

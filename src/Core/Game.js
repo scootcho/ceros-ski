@@ -1,8 +1,8 @@
-import * as Constants from "../Constants";
-import { AssetManager } from "./AssetManager";
+import * as Constants from '../Constants';
+import { AssetManager } from './AssetManager';
 import { Canvas } from './Canvas';
-import { Skier } from "../Entities/Skier";
-import { ObstacleManager } from "../Entities/Obstacles/ObstacleManager";
+import { Skier } from '../Entities/Skier';
+import { ObstacleManager } from '../Entities/Obstacles/ObstacleManager';
 import { Rect } from './Utils';
 
 export class Game {
@@ -29,7 +29,7 @@ export class Game {
 
     run(timeStamp) {
         this.canvas.clearCanvas();
-        this.showFps(timeStamp)
+        this.showFps(timeStamp);
 
         this.updateGameWindow();
         this.drawGameWindow();
@@ -44,12 +44,12 @@ export class Game {
 
         // Calculate fps
         let fps = Math.round(1 / this.secondsPassed);
-        this.canvas.ctx.font = "30px Verdana";
+        this.canvas.ctx.font = '30px Verdana';
         this.canvas.ctx.fillText(`FPS: ${fps}`, 10, 50);
     }
 
     updateGameWindow() {
-        this.skier.checkJumping()
+        this.skier.checkAnimating();
         this.skier.move();
 
         const previousGameWindow = this.gameWindow;
@@ -69,14 +69,19 @@ export class Game {
 
     calculateGameWindow() {
         const skierPosition = this.skier.getPosition();
-        const left = skierPosition.x - (Constants.GAME_WIDTH / 2);
-        const top = skierPosition.y - (Constants.GAME_HEIGHT / 2);
+        const left = skierPosition.x - Constants.GAME_WIDTH / 2;
+        const top = skierPosition.y - Constants.GAME_HEIGHT / 2;
 
-        this.gameWindow = new Rect(left, top, left + Constants.GAME_WIDTH, top + Constants.GAME_HEIGHT);
+        this.gameWindow = new Rect(
+            left,
+            top,
+            left + Constants.GAME_WIDTH,
+            top + Constants.GAME_HEIGHT
+        );
     }
 
     handleKeyDown(event) {
-        switch(event.which) {
+        switch (event.which) {
             case Constants.KEYS.LEFT:
                 this.skier.turnLeft();
                 event.preventDefault();

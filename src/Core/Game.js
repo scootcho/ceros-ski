@@ -2,6 +2,7 @@ import * as Constants from '../Constants';
 import { AssetManager } from './AssetManager';
 import { Canvas } from './Canvas';
 import { Skier } from '../Entities/Skier';
+import { Rhino } from '../Entities/Rhino';
 import { ObstacleManager } from '../Entities/Obstacles/ObstacleManager';
 import { Rect } from './Utils';
 
@@ -9,11 +10,13 @@ export class Game {
     gameWindow = null;
     secondsPassed;
     oldTimeStamp;
+    gameOver;
 
     constructor() {
         this.assetManager = new AssetManager();
         this.canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         this.skier = new Skier(0, 0);
+        this.rhino = new Rhino(-200, 0);
         this.obstacleManager = new ObstacleManager();
 
         document.addEventListener('keydown', this.handleKeyDown.bind(this));
@@ -33,6 +36,7 @@ export class Game {
 
         this.updateGameWindow();
         this.drawGameWindow();
+        this.checkGameOver();
 
         requestAnimationFrame(this.run.bind(this));
     }
@@ -52,18 +56,31 @@ export class Game {
         this.skier.checkAnimating();
         this.skier.move();
 
+        this.rhino.findSkier(this.skier);
+        this.rhino.checkAnimating();
+        this.rhino.move();
+
         const previousGameWindow = this.gameWindow;
         this.calculateGameWindow();
 
         this.obstacleManager.placeNewObstacle(this.gameWindow, previousGameWindow);
 
         this.skier.checkIfSkierHitObstacle(this.obstacleManager, this.assetManager);
+        this.rhino.checkIfRhinoCatchSkier(this.skier, this.assetManager);
     }
 
     drawGameWindow() {
         this.canvas.setDrawOffset(this.gameWindow.left, this.gameWindow.top);
 
         this.skier.draw(this.canvas, this.assetManager);
+        this.rhino.draw(this.canvas, this.assetManager);
+        this.obstacleManager.drawObstacles(this.canvas, this.assetManager);
+    }
+
+    drawGameOverWindow() {
+        this.canvas.clearCanvas();
+
+        this.rhino.draw(this.canvas, this.assetManager);
         this.obstacleManager.drawObstacles(this.canvas, this.assetManager);
     }
 
@@ -78,6 +95,11 @@ export class Game {
             left + Constants.GAME_WIDTH,
             top + Constants.GAME_HEIGHT
         );
+    }
+
+    checkGameOver() {
+        this.gameOver = this.rhino.isEating;
+        if (this.gameOver) this.drawGameOverWindow();
     }
 
     handleKeyDown(event) {

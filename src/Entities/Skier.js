@@ -10,6 +10,7 @@ export class Skier extends Entity {
     animationDuration;
     isAnimating = false;
     timeStart = 0;
+    isLoopAnimation = false;
     currentAnimation = null;
     animationManager = new AnimationManager();
 
@@ -103,7 +104,8 @@ export class Skier extends Entity {
                 this,
                 this.currentAnimation,
                 this.timeStart,
-                this.animationDuration
+                this.animationDuration,
+                this.isLoopAnimation
             );
         } else {
             this.updateAsset();
@@ -114,6 +116,7 @@ export class Skier extends Entity {
         if (!this.isAnimating) {
             this.timeStart = performance.now();
             this.isAnimating = true;
+            this.isLoopAnimation = false;
             this.animationDuration = Constants.SKIER_JUMP_DURATION;
             this.currentAnimation = Constants.SKIER_JUMP_ANIMATION;
         }

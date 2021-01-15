@@ -8,16 +8,16 @@ import { Rect } from './Utils';
 
 export class Game {
     gameWindow = null;
+    gameOver = false;
     secondsPassed;
     oldTimeStamp;
-    gameOver;
     gameKeyDownEvents;
 
     constructor() {
         this.assetManager = new AssetManager();
         this.canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         this.skier = new Skier(0, 0);
-        this.rhino = new Rhino(-200, 0);
+        this.rhino = new Rhino(0, -500);
         this.obstacleManager = new ObstacleManager();
 
         this.gameKeyDownEvents = this.handleKeyDown.bind(this);

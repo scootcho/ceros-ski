@@ -11,6 +11,7 @@ export class Game {
     secondsPassed;
     oldTimeStamp;
     gameOver;
+    gameKeyDownEvents;
 
     constructor() {
         this.assetManager = new AssetManager();
@@ -19,7 +20,8 @@ export class Game {
         this.rhino = new Rhino(-200, 0);
         this.obstacleManager = new ObstacleManager();
 
-        document.addEventListener('keydown', this.handleKeyDown.bind(this));
+        this.gameKeyDownEvents = this.handleKeyDown.bind(this);
+        document.addEventListener('keydown', this.gameKeyDownEvents, true);
     }
 
     init() {
@@ -99,7 +101,14 @@ export class Game {
 
     checkGameOver() {
         this.gameOver = this.rhino.isEating;
-        if (this.gameOver) this.drawGameOverWindow();
+        if (this.gameOver) {
+            this.drawGameOverWindow();
+            this.disableArrowKeys();
+        }
+    }
+
+    disableArrowKeys() {
+        document.removeEventListener('keydown', this.gameKeyDownEvents, true);
     }
 
     handleKeyDown(event) {

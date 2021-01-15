@@ -1,44 +1,42 @@
 import * as Constants from '../Constants';
 
 export class AnimationManager {
-    index = 0;
-    currentFrame;
-    lastLoopFrameStartTime;
+    lastLoopStartTime;
 
     constructor() {}
 
-    animate(entity, currentAnimation, startTime, duration, loop = false) {
-        console.log('currentAnimation', currentAnimation);
+    animate(entity, currentAnimation, timeStart, duration, loop = false) {
         let animationSeq = Constants.ANIMATION_TYPES[currentAnimation];
         let frames = animationSeq.length;
         let durationPerFrame = duration / frames;
         let timeNow = performance.now();
-        this.currentFrame = this.index + 1;
+        let timeLapsed;
+        let currentFrameIndex;
 
         if (loop) {
-            this.lastLoopFrameStartTime
-                ? this.lastLoopFrameStartTime
-                : (this.lastLoopFrameStartTime = startTime);
-            if (timeNow > this.lastLoopFrameStartTime + durationPerFrame * this.currentFrame) {
-                this.lastLoopFrameStartTime = timeNow;
-                this.index += 1;
-            }
-            if (this.currentFrame === frames) {
-                this.lastLoopFrameStartTime = timeNow;
-                this.index = 0;
+            this.lastLoopStartTime ? this.lastLoopStartTime : (this.lastLoopStartTime = timeStart);
+            timeLapsed = timeNow - this.lastLoopStartTime;
+            timeLapsed = timeLapsed % duration;
+
+            if (timeNow < this.lastLoopStartTime + duration) {
+                currentFrameIndex = Math.ceil(timeLapsed / durationPerFrame) - 1;
+            } else {
+                this.lastLoopStartTime = timeNow;
+                currentFrameIndex = frames - 1; // last frame
                 entity.isAnimating = true;
+                entity.currentAnimation = null;
             }
         } else {
-            if (timeNow > startTime + durationPerFrame * this.currentFrame) {
-                this.index += 1;
-            }
-            if (this.currentFrame === frames) {
+            timeLapsed = timeNow - timeStart;
+            if (timeNow < timeStart + duration) {
+                currentFrameIndex = Math.ceil(timeLapsed / durationPerFrame) - 1;
+            } else {
+                currentFrameIndex = frames - 1; // last frame
                 entity.isAnimating = false;
                 entity.currentAnimation = null;
-                this.index = 0;
             }
         }
 
-        entity.assetName = animationSeq[this.index];
+        entity.assetName = animationSeq[currentFrameIndex];
     }
 }

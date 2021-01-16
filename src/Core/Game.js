@@ -34,13 +34,39 @@ export class Game {
 
     run(timeStamp) {
         this.canvas.clearCanvas();
+
+        this.showCanvasStyle();
         this.showFps(timeStamp);
+        this.showScore();
 
         this.updateGameWindow();
         this.drawGameWindow();
         this.checkGameOver();
 
         requestAnimationFrame(this.run.bind(this));
+    }
+
+    showCanvasStyle() {
+        // Create a linear gradient
+        // The start gradient point is at x=0, y=0
+        // The end gradient point is at x=GAME_WIDTH, y=GAME_HEIGHT
+        let gradient = this.canvas.ctx.createLinearGradient(
+            0,
+            0,
+            Constants.GAME_WIDTH,
+            Constants.GAME_HEIGHT
+        );
+        gradient.addColorStop(0, 'red');
+        gradient.addColorStop(1 / 6, 'orange');
+        gradient.addColorStop(2 / 6, 'yellow');
+        gradient.addColorStop(3 / 6, 'green');
+        gradient.addColorStop(4 / 6, 'blue');
+        gradient.addColorStop(5 / 6, 'indigo');
+        gradient.addColorStop(1, 'violet');
+
+        this.canvas.ctx.fillStyle = gradient;
+        this.canvas.ctx.font = '30px Verdana';
+        this.canvas.ctx.textAlign = 'start';
     }
 
     showFps(timeStamp) {
@@ -50,8 +76,14 @@ export class Game {
 
         // Calculate fps
         let fps = Math.round(1 / this.secondsPassed);
-        this.canvas.ctx.font = '30px Verdana';
+
         this.canvas.ctx.fillText(`FPS: ${fps}`, 10, 50);
+    }
+
+    showScore() {
+        let score = this.skier.y;
+        score = Math.round(score);
+        this.canvas.ctx.fillText(`SCORE: ${score}`, Constants.GAME_WIDTH - 250, 50);
     }
 
     updateGameWindow() {
@@ -84,6 +116,15 @@ export class Game {
 
         this.rhino.draw(this.canvas, this.assetManager);
         this.obstacleManager.drawObstacles(this.canvas, this.assetManager);
+
+        this.canvas.ctx.font = '50px Verdana';
+        this.canvas.ctx.textAlign = 'center';
+
+        this.canvas.ctx.fillText(
+            'Press ENTER to restart',
+            Constants.GAME_WIDTH / 2,
+            Constants.GAME_HEIGHT / 2
+        );
     }
 
     calculateGameWindow() {

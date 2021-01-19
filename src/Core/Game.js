@@ -11,6 +11,8 @@ export class Game {
     gameOver = false;
     secondsPassed;
     oldTimeStamp;
+    gameStartTime;
+    gameScore;
     gameKeyDownEvents;
 
     constructor() {
@@ -37,7 +39,7 @@ export class Game {
 
         this.showCanvasStyle();
         this.showFps(timeStamp);
-        this.showScore();
+        this.showScore(timeStamp);
 
         this.updateGameWindow();
         this.drawGameWindow();
@@ -80,10 +82,13 @@ export class Game {
         this.canvas.ctx.fillText(`FPS: ${fps}`, 10, 50);
     }
 
-    showScore() {
-        let score = this.skier.y;
-        score = Math.round(score);
-        this.canvas.ctx.fillText(`SCORE: ${score}`, Constants.GAME_WIDTH - 250, 50);
+    showScore(timeStamp) {
+        if (!this.gameStartTime) this.gameStartTime = timeStamp;
+        let yDistance = this.skier.y;
+        let elapsedTime = timeStamp - this.gameStartTime;
+
+        this.gameScore = Math.round(yDistance / 100 + elapsedTime / 500);
+        this.canvas.ctx.fillText(`SCORE: ${this.gameScore}`, Constants.GAME_WIDTH - 250, 50);
     }
 
     updateGameWindow() {
@@ -123,7 +128,7 @@ export class Game {
         this.canvas.ctx.fillText(
             'Press ENTER to restart',
             Constants.GAME_WIDTH / 2,
-            Constants.GAME_HEIGHT / 2
+            Constants.GAME_HEIGHT / 2 - 150
         );
     }
 

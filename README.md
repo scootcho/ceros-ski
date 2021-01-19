@@ -21,11 +21,11 @@ https://htmlpreview.github.io/?https://github.com/scootcho/ceros-ski/blob/main/d
 -   Rhino will eat skier when caught.
 -   Press Enter key to restart the game when game is over.
 
-## Know Bugs
+## Known Bugs
 
--   [x] ~~game crash when press left arrow after skier crash~~
--   [x] ~~`ObstacleManager.js:66 Uncaught (in promise) TypeError: Cannot read property 'left' of null`~~
--   [ ] Skier can jump upwards when hitting the ramp while going up
+-   [x] Fixed: ~~game crash when press left arrow after skier crash~~
+-   [x] Fixed: ~~`ObstacleManager.js:66 Uncaught (in promise) TypeError: Cannot read property 'left' of null`~~
+-   [ ] Open: Skier can jump upwards when hitting the ramp while going up
 
 ## Challenge Implementation Notes
 

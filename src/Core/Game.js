@@ -5,6 +5,7 @@ import { Skier } from '../Entities/Skier';
 import { Rhino } from '../Entities/Rhino';
 import { ObstacleManager } from '../Entities/Obstacles/ObstacleManager';
 import { Rect } from './Utils';
+import { Snow } from './snow';
 
 export class Game {
     gameWindow = null;
@@ -21,6 +22,7 @@ export class Game {
         this.skier = new Skier(0, 0);
         this.rhino = new Rhino(0, -500);
         this.obstacleManager = new ObstacleManager();
+        this.snow = new Snow(this.canvas);
 
         this.gameKeyDownEvents = this.handleKeyDown.bind(this);
         document.addEventListener('keydown', this.gameKeyDownEvents, true);
@@ -37,6 +39,7 @@ export class Game {
     run(timeStamp) {
         this.canvas.clearCanvas();
 
+        this.snow.draw(this.canvas);
         this.showCanvasStyle();
         this.showFps(timeStamp);
         this.showScore(timeStamp);

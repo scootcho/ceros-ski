@@ -1,5 +1,15 @@
 # Ceros Ski Code Challenge
 
+## Play the game
+
+here
+
+https://seemly-occipital-town.glitch.me/
+
+or
+
+https://htmlpreview.github.io/?https://github.com/scootcho/ceros-ski/blob/main/dist/index.html
+
 ## Game Features
 
 -   Skier can get back up after crashing into obstacles and face whichever arrow key direction.

@@ -39,6 +39,7 @@ export const RHINO_TIME_START = 3000;
 export const RHINO_RUN_DURATION = 300;
 export const RHINO_EAT_SKIER_DURATION = 1500;
 export const RHINO_DIAGONAL_SPEED_REDUCER = 1.2;
+export const RHINO_SKIER_DISTANCE_THRESHOLD = 10;
 
 export const ASSETS = {
     [SKIER_CRASH]: 'img/skier_crash.png',

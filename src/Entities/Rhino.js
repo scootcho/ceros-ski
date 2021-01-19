@@ -7,6 +7,7 @@ export class Rhino extends Entity {
     assetName = Constants.RHINO_DEFAULT;
     speed = Constants.RHINO_STARTING_SPEED;
     rhinoTimeStart = Constants.RHINO_TIME_START;
+    rhinoSkierDistanceThreshold = Constants.RHINO_SKIER_DISTANCE_THRESHOLD;
     isAnimating = false;
     isLoopAnimation = false;
     timeStart = 0;
@@ -32,23 +33,32 @@ export class Rhino extends Entity {
         let timeNow = performance.now();
         if (timeNow > this.timeStart + this.rhinoTimeStart) {
             if (!this.isEating) {
+                this.run();
+
                 let xDistance = this.x - this.skierPosition.x;
                 let yDistance = this.y - this.skierPosition.y;
+                let skierOnLeft =
+                    xDistance > 0 && Math.abs(xDistance) > this.rhinoSkierDistanceThreshold;
+                let skierOnRight =
+                    xDistance < 0 && Math.abs(xDistance) > this.rhinoSkierDistanceThreshold;
+                let skierBelow =
+                    yDistance < 0 && Math.abs(yDistance) > this.rhinoSkierDistanceThreshold;
+                let skierAbove =
+                    yDistance > 0 && Math.abs(yDistance) > this.rhinoSkierDistanceThreshold;
 
-                let distanceThreshold = 10;
-
-                if (xDistance > distanceThreshold) {
+                if (skierBelow && !skierOnLeft && !skierOnRight) {
+                    this.moveRhinoDown();
+                } else if (skierOnLeft && skierBelow && !skierOnRight) {
+                    this.moveRhinoLeftDown();
+                } else if (skierOnRight && skierBelow && !skierOnLeft) {
+                    this.moveRhinoRightDown();
+                } else if (skierAbove) {
+                    this.moveRhinoUp();
+                } else if (skierOnLeft) {
                     this.moveRhinoLeft();
-                } else if (xDistance < distanceThreshold) {
+                } else if (skierOnRight) {
                     this.moveRhinoRight();
                 }
-
-                if (yDistance < distanceThreshold) {
-                    this.moveRhinoDown();
-                } else if (yDistance > distanceThreshold) {
-                    this.moveRhinoUp();
-                }
-                this.run();
             }
         }
     }
